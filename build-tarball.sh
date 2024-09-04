@@ -24,7 +24,8 @@ package="$1"
 set -e
 
 # Fetch sources (uses package 'git').
-git clone --depth 1 https://git.savannah.gnu.org/git/"$package".git
+# No '--depth 1' here, to avoid an error "unknown revision" during gen-ChangeLog.
+git clone https://git.savannah.gnu.org/git/"$package".git
 git clone --depth 1 https://git.savannah.gnu.org/git/gnulib.git
 
 # Apply patches.
