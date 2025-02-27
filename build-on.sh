@@ -24,6 +24,9 @@ make="$3"
 
 set -x
 
+# Make sure the assignment to tarfile below works.
+rm -rf *-src.tar.gz
+
 # Unpack the tarball.
 tarfile=`echo "$package"-*.tar.gz`
 packagedir=`echo "$tarfile" | sed -e 's/\.tar\.gz$//'`
