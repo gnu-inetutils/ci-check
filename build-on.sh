@@ -24,6 +24,11 @@ make="$3"
 
 set -x
 
+case "$configure_options" in
+  --host=riscv*) cross_compiling=true ;;
+  *)             cross_compiling=false ;;
+esac
+
 # Make sure the assignment to tarfile below works.
 rm -rf *-src.tar.gz
 
@@ -42,7 +47,9 @@ cd build
 # Build.
 $make V=1 > log2 2>&1; rc=$?; cat log2; test $rc = 0 || exit 1
 
-# Run the tests.
-$make check V=1 > log3 2>&1; rc=$?; cat log3; test $rc = 0 || exit 1
+if ! $cross_compiling; then
+  # Run the tests.
+  $make check V=1 > log3 2>&1; rc=$?; cat log3; test $rc = 0 || exit 1
+fi
 
 cd ..
