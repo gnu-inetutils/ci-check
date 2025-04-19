@@ -425,7 +425,14 @@ jobs:
             : "Install OpenBSD packages"
             : "List of packages: https://cdn.openbsd.org/pub/OpenBSD/7.6/packages/amd64/"
             : pkg_add ...
-            pkg_add bison
+            pkg_add bison wget xz gmake
+            wget https://ftp.gnu.org/gnu/help2man/help2man-1.49.3.tar.xz \
+              && unxz help2man-1.49.3.tar.xz \
+              && tar -xf help2man-1.49.3.tar \
+              && cd help2man-1.49.3 \
+              && ./configure \
+              && gmake install
+            cd "$GITHUB_WORKSPACE"
             ls -l
             export CPPFLAGS="-I/usr/local/include -Wall"
             export LDFLAGS="-L/usr/local/lib"
