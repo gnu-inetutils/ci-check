@@ -57,6 +57,7 @@ jobs:
       - run: uname -a
       - run: id
       - run: env | LC_ALL=C sort
+      - run: df -T /tmp
       - run: pwd
       # Install Ubuntu packages.
       # List of packages: https://packages.ubuntu.com/
