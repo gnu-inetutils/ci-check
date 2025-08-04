@@ -23,22 +23,42 @@ package="$1"
 
 set -e
 
+# On even days, we use the gnulib submodule.
+# On odd days, we use the newest gnulib.
+# Rationale:
+# <https://lists.gnu.org/archive/html/bug-inetutils/2025-08/msg00006.html>
+newest_gnulib=$(expr $(date +%j) % 2)
+
 # Fetch sources (uses package 'git').
 # No '--depth 1' here, to avoid an error "unknown revision" during gen-ChangeLog.
 git clone https://git.savannah.gnu.org/git/"$package".git
-git clone --depth 1 "${gnulib_url}"
+if test $newest_gnulib = 1; then
+  git clone --depth 1 "${gnulib_url}"
+fi
 
 # Apply patches.
 (cd "$package" && patch -p1 < ../patches/tests.diff)
 
-export GNULIB_SRCDIR=`pwd`/gnulib
+if test $newest_gnulib = 1; then
+  export GNULIB_SRCDIR=`pwd`/gnulib
+else
+  unset GNULIB_SRCDIR
+fi
 cd "$package"
-# Force use of the newest gnulib.
-rm -f .gitmodules
+if test $newest_gnulib = 1; then
+  # Force use of the newest gnulib.
+  rm -f .gitmodules
+fi
 
 # Fetch extra files and generate files (uses packages wget, python3, automake, autoconf, m4).
 date --utc --iso-8601 > .tarball-version
-./bootstrap --no-git --gnulib-srcdir="$GNULIB_SRCDIR"
+if test $newest_gnulib = 1; then
+  ./bootstrap --no-git --gnulib-srcdir="$GNULIB_SRCDIR"
+else
+  # TODO: Optimize this. We need the gnulib checkout only with depth 1.
+  # See how gitsub.sh does it, or look at gettext/autopull.sh:func_git_clone_shallow.
+  ./bootstrap
+fi
 
 # Configure (uses package 'file').
 ./configure --config-cache CPPFLAGS="-Wall" > log1 2>&1; rc=$?; cat log1; test $rc = 0 || exit 1
