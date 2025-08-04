@@ -21,13 +21,13 @@ set -x
 
 package="$1"
 
-set -e
-
 # On even days, we use the gnulib submodule.
 # On odd days, we use the newest gnulib.
 # Rationale:
 # <https://lists.gnu.org/archive/html/bug-inetutils/2025-08/msg00006.html>
 newest_gnulib=$(expr $(date +%j) % 2)
+
+set -e
 
 # Fetch sources (uses package 'git').
 # No '--depth 1' here, to avoid an error "unknown revision" during gen-ChangeLog.
