@@ -38,6 +38,7 @@ fi
 
 # Apply patches.
 (cd "$package" && patch -p1 < ../patches/tests.diff)
+(cd "$package" && patch -p1 < ../patches/0001-Improve-efficiency-of-git-clone.patch)
 
 if test $newest_gnulib = 1; then
   export GNULIB_SRCDIR=`pwd`/gnulib
