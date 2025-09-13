@@ -29,11 +29,13 @@ newest_gnulib=$(expr $(date +%j) % 2)
 
 set -e
 
+. ./init-git.sh
+
 # Fetch sources (uses package 'git').
 # No '--depth 1' here, to avoid an error "unknown revision" during gen-ChangeLog.
-git clone https://https.git.savannah.gnu.org/git/"$package".git
+git clone https://git.savannah.gnu.org/git/"$package".git
 if test $newest_gnulib = 1; then
-  git clone --depth 1 "${gnulib_url}"
+  git clone --depth 1 https://git.savannah.gnu.org/git/gnulib.git
 fi
 
 # Apply patches.
