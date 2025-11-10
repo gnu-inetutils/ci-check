@@ -44,6 +44,8 @@ env:
   # URL prefix suitable for downloading individual files through 'wget'
   #gnulib_url_prefix: https://gitweb.git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob_plain;hb=HEAD;f=
   gnulib_url_prefix: https://raw.githubusercontent.com/coreutils/gnulib/refs/heads/master/
+  # Mirror of ftp.gnu.org
+  ftp_gnu_org: mirrors.ocf.berkeley.edu
 
 jobs:
   build-tarball:
@@ -425,7 +427,7 @@ jobs:
             : "List of packages: https://cdn.openbsd.org/pub/OpenBSD/7.6/packages/amd64/"
             : pkg_add ...
             pkg_add bison wget xz gmake
-            wget https://ftp.gnu.org/gnu/help2man/help2man-1.49.3.tar.xz \
+            wget https://${{ env.ftp_gnu_org }}/gnu/help2man/help2man-1.49.3.tar.xz \
               && unxz help2man-1.49.3.tar.xz \
               && tar -xf help2man-1.49.3.tar \
               && cd help2man-1.49.3 \
