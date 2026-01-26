@@ -1,6 +1,6 @@
 #!/bin/sh
-set -x
-# Copyright (C) 2024-2025 Free Software Foundation, Inc.
+
+# Copyright (C) 2024-2026 Free Software Foundation, Inc.
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
@@ -39,7 +39,7 @@ if test $newest_gnulib = 1; then
 fi
 
 # Apply patches.
-(cd "$package" && patch -p1 < ../patches/tests.diff)
+#(cd "$package" && patch -p1 < ../patches/tests.diff)
 
 if test $newest_gnulib = 1; then
   export GNULIB_SRCDIR=`pwd`/gnulib
